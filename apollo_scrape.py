@@ -12,9 +12,7 @@ from bs4 import BeautifulSoup
 
 companies = [
             #  'McDonalds', 'yum! brands', 'Darden', 'Chicago Bulls', 'Autogrill', 
-             'Restaurant Brands International',
-             'Dominos', 'Bloomingdales', 'Comcast', 'Walt Disney World', 'Charter Communications', 'Netflix', 'NASCAR',
-             'Lime'
+             'Chicago Bears'
              ]
 categories = ['data', 'VP', 'HR']
 
@@ -22,10 +20,11 @@ categories = ['data', 'VP', 'HR']
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver.get("https://app.apollo.io/#/login?redirectTo=https%3A%2F%2Fapp.apollo.io%2F%23%2Fonboarding%2Fbulk%3F_k%3Dnbfzqc&_k=hpz0x5")
-
+time.sleep(0.5)
+driver.maximize_window()
 time.sleep(2)
 
-driver.find_element_by_name('email').send_keys('schwartzray8@gmail.com')
+driver.find_element_by_name('email').send_keys('daniel_schwartz@college.harvard.edu')
 driver.find_element_by_name('password').send_keys('Cessnap1Cessnap1')
 logIn = driver.find_element_by_class_name("zp_2z1mP")
 
@@ -38,7 +37,7 @@ time.sleep(2)
 
 with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
     writer = csv.writer(f)
-    # writer.writerow(["company", "name", "role", "email"])
+    writer.writerow(["company", "name", "role", "email"])
     for company_name in companies:
         contact_limit = 5
         search_bar = driver.find_element_by_class_name("zp_MIz8G")
@@ -48,7 +47,8 @@ with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
 
         time.sleep(3)
         # Clicking the 6th entry which should be the compnay (not great)
-        driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div[2]/div[1]/div[1]/div[4]/div/div/div/div/div/div[6]/div[2]').click()
+        driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[1]/div[1]/div[4]/div/div/div/div/div/div[6]/div[2]').click()
+        # driver.find_element_by_partial_link_text(company_name).click()
 
         time.sleep(1)
 
