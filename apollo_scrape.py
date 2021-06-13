@@ -11,8 +11,55 @@ import csv
 from bs4 import BeautifulSoup
 
 companies = [
-            #  'McDonalds', 'yum! brands', 'Darden', 'Chicago Bulls', 'Autogrill', 
-             'Chicago Bears'
+            'Intellia Therapeutics',
+            'Amkor Technology',
+            'Amicus Therapeutics',
+            'Neurocrine Biosciences',
+            'CMC Materials',
+            'Darling Ingredients',
+            'Brooks Automation',
+            'Inphi',
+            'World Wrestling Entertainment',
+            'Science Applications International',
+            'Chemocentryx',
+            'Chemed',
+            'Lithia Motors',
+            'Insmed',
+            'Beyond Meat',
+            'Hecla Mining',
+            'CareDx',
+            'Amedisys',
+            'Simpson Manufacturing',
+            'II-VI',
+            'Sorrento Therapeutics',
+            'Toro',
+            'Fate Therapeutics',
+            'Mercury Systems',
+            'IRhythm Technologies',
+            'J2 Global',
+            'BlackLine',
+            'Thor Industries',
+            'Builders FirstSource',
+            'LCI Industries',
+            'Quaker Chemical',
+            'Inspire Medical Systems',
+            'Antero Midstream',
+            'TopBuild',
+            'Bandwidth',
+            'STAAR Surgical',
+            'PagerDuty',
+            'BMC Stock Holdings',
+            'Onto Innovation',
+            'Upwork',
+            'FormFactor',
+            'Silgan Holdings',
+            'Smartsheet',
+            'Shutterstock',
+            '2U',
+            'Universal Forest Prods',
+            'Lattice Semiconductor',
+            'Axon Enterprise',
+            'Saia'
              ]
 categories = ['data', 'VP', 'HR']
 
@@ -37,18 +84,20 @@ time.sleep(2)
 
 with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
     writer = csv.writer(f)
-    writer.writerow(["company", "name", "role", "email"])
+    # writer.writerow(["company", "name", "role", "email"])
     for company_name in companies:
         contact_limit = 5
         search_bar = driver.find_element_by_class_name("zp_MIz8G")
         search_bar.clear()
-        time.sleep(0.5)
+        time.sleep(1)
         search_bar.send_keys(company_name)
 
         time.sleep(3)
         # Clicking the 6th entry which should be the compnay (not great)
-        driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[1]/div[1]/div[4]/div/div/div/div/div/div[6]/div[2]').click()
-        # driver.find_element_by_partial_link_text(company_name).click()
+        try:
+            driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[1]/div[1]/div[4]/div/div/div/div/div/div[6]/div[2]').click()
+        except Exception:
+            continue
 
         time.sleep(1)
 
@@ -71,7 +120,6 @@ with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
             for i in range(2,5):
                 time.sleep(3)
                 # page_num_url = driver.current_url
-                print('got page num url: ', page_num_url)
                 try:
                     people = driver.find_elements_by_class_name('zp_1svmi')
                     if people == []:
@@ -90,13 +138,15 @@ with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
                             time.sleep(0.5)
                             driver.find_element_by_partial_link_text(name).click()
                             time.sleep(0.5)
+                            print('about to try to click')
                             try:
-                                driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/span/a').click()
+                                driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/span/a').click()                        
                                 time.sleep(2)
                             except:
                                 time.sleep(2)
+                                print('cant click email')
                             try:
-                                email = driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/span/a').get_attribute('innerText')
+                                email = driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/span').get_attribute('innerText')
                             except:
                                 email = ''
                                 print('no email')
@@ -108,7 +158,6 @@ with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
                             time.sleep(2)
                             break
 
-                    print(str(page_num_url)[:-1]+str(i))
                     driver.get(str(page_num_url)[:-1]+str(i))
                     page_num_url = str(page_num_url)[:-1]+str(i)
                 except Exception:
