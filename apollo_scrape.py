@@ -11,11 +11,13 @@ import csv
 from bs4 import BeautifulSoup
 
 companies = [
-            'Lattice Semiconductor',
-            'Axon Enterprise',
-            'Saia'
+            'Vallourec',
+            'Vestas',
+            'Weatherford International',
+            'Woodside Petroleum',
+            'WorleyParsons'
              ]
-categories = ['data', 'VP', 'HR']
+categories = ['data', 'VP', 'HR', 'Head of Partnerships']
 
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -26,7 +28,7 @@ driver.maximize_window()
 time.sleep(2)
 
 driver.find_element_by_name('email').send_keys('daniel_schwartz@college.harvard.edu')
-driver.find_element_by_name('password').send_keys('Cessnap1Cessnap1')
+driver.find_element_by_name('password').send_keys('apollo123hdaggangmoney')
 logIn = driver.find_element_by_class_name("zp_2z1mP")
 
 time.sleep(1)
@@ -36,7 +38,7 @@ logIn.click()
 time.sleep(2)
 
 
-with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
+with open('/Users/danielschwartz/downloads/second_run.csv', "a") as f:
     writer = csv.writer(f)
     # writer.writerow(["company", "name", "role", "email"])
     for company_name in companies:
@@ -85,22 +87,23 @@ with open('/Users/danielschwartz/downloads/first_run.csv', "a") as f:
                         tmp = info
                         name = tmp.split('\n')[0]
                         info = info.lower()
-                        if 'director' in info or 'sr.' in info or 'senior' in info or 'vp' in info or 'chief' in info or 'vice president' in info:
+                        if 'director' in info or 'sr.' in info or 'senior' in info or 'vp' in info or 'chief' in info or 'vice president' in info or 'partnerships' in info:
                             contact_limit -= 1
                             info = info.split('\n')
                             role = info[1].strip()
                             time.sleep(0.5)
                             driver.find_element_by_partial_link_text(name).click()
-                            time.sleep(0.5)
+                            time.sleep(1)
                             print('about to try to click')
                             try:
-                                driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/span/a').click()                        
+                                fuck = driver.find_element_by_xpath("//a[@class='zp-link zp_3_fnL' and text()='Access Email']")
+                                fuck.click()                        
                                 time.sleep(2)
                             except:
                                 time.sleep(2)
                                 print('cant click email')
                             try:
-                                email = driver.find_element_by_xpath('//*[@id="provider-mounter"]/div/div[2]/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/span').get_attribute('innerText')
+                                email = driver.find_element_by_xpath("//div[@class='zp-contact-email-envelope-container zp_n4sev']/span").get_attribute('innerText')
                             except:
                                 email = ''
                                 print('no email')
